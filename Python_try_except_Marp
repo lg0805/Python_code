@@ -1,0 +1,628 @@
+---
+marp: true
+theme: gaia
+paginate: true
+backgroundColor: #fff
+style: |
+  section {
+    font-size: 26px;
+  }
+  code {
+    font-size: 22px;
+  }
+  h1 {
+    color: #2e3440;
+  }
+  h2 {
+    color: #5e81ac;
+  }
+  h3 {
+    color: #88c0d0;
+  }
+  table {
+    font-size: 22px;
+  }
+---
+
+# 🐍 Python 异常处理
+## 学习指南
+
+---
+
+# 📋 开始之前
+
+**预计学习时间：** 1.5 - 2 小时（可分2-3天学习）
+
+**前置知识：**
+1. 能运行Python基本代码（print, 变量, 算术运算）
+2. 了解if-else条件判断
+3. 知道如何运行Python文件或使用交互式环境
+
+---
+
+# 学习目标
+
+1. ✅ 能够识别常见程序报错（如文件找不到、除零错误）
+2. ✅ 能够用try-except捕获并处理异常，防止程序崩溃
+3. ✅ 能够自定义错误提示，让程序更友好
+4. ✅ 能够处理文件操作时可能出现的错误
+
+---
+
+# 🎯 第一阶段：理解核心概念
+
+## 生活类比
+
+想象你在开车，突然看到前方有"施工绕行"的牌子。你有两种选择：
+
+1. **不处理**：继续开→撞上障碍→车毁人亡（程序崩溃）
+2. **提前处理**：看到牌子→绕行另一条路→安全到达（程序正常运行）
+
+异常处理就像是给程序装了个"导航系统"，遇到问题时能自动选择备用路线。
+
+---
+
+# 为什么要学异常处理？
+
+1. **防止程序突然崩溃**
+   - 用户看到的不是红色错误，而是友好提示
+
+2. **提高程序健壮性**
+   - 处理意外情况，程序更可靠
+
+3. **更好的用户体验**
+   - 告诉用户"文件不存在，请检查路径"
+   - 而不是看不懂的英文错误
+
+---
+
+# 常见误解
+
+❌ **误解：** "异常处理让代码变复杂，能不用就不用"
+✅ **正确理解：** "异常处理让代码更健壮，关键地方必须用"
+
+❌ **误解：** "用异常处理替代所有的if检查"
+✅ **正确理解：** "if检查可预防的问题用if，不可预见的意外用异常处理"
+
+---
+
+# 💻 第二阶段：基础应用
+
+## 先看看没有异常处理会怎样
+
+```python
+# 示例1：除零错误
+result = 10 / 0
+print("结果是：", result)  # 这行永远不会执行
+```
+
+**运行结果：**
+```
+ZeroDivisionError: division by zero
+```
+
+程序在第二行就崩溃了，后面的代码都不执行。
+
+---
+
+# 最简单的异常处理：try-except
+
+```python
+# 示例2：基本的异常捕获
+try:
+    result = 10 / 0
+    print("结果是：", result)
+except:
+    print("哎呀，出错了！但程序不会崩溃")
+
+print("我还能继续执行哦！")
+```
+
+**运行结果：**
+```
+哎呀，出错了！但程序不会崩溃
+我还能继续执行哦！
+```
+
+---
+
+# 📌 关键理解
+
+- **try：** 尝试执行这里的代码
+- **except：** 如果try里的代码出错了，就执行这里的代码
+- **重点：** 无论是否出错，except后面的代码都会继续执行
+
+---
+
+# 捕获特定类型的异常
+
+```python
+# 示例3：捕获特定异常
+try:
+    # 可能引发不同类型错误的代码
+    num = int(input("请输入一个数字："))
+    result = 10 / num
+    print(f"10除以{num}的结果是：{result}")
+
+except ZeroDivisionError:
+    print("错误：除数不能为0！")
+
+except ValueError:
+    print("错误：请输入有效的数字！")
+
+except:
+    print("发生了其他未知错误")
+
+print("程序结束")
+```
+
+---
+
+# 🔍 测试场景
+
+测试不同的输入，观察程序行为：
+
+- **输入0** → 触发ZeroDivisionError
+- **输入abc** → 触发ValueError
+- **输入5** → 正常运行
+
+---
+
+# 📊 常见异常类型速查表
+
+| 异常类型 | 触发场景 | 示例 |
+|---------|---------|------|
+| ZeroDivisionError | 除数为0 | `10 / 0` |
+| ValueError | 类型转换失败 | `int("abc")` |
+| TypeError | 类型操作错误 | `"hello" + 5` |
+| IndexError | 索引越界 | `lst[10]`（列表只有3个元素） |
+| KeyError | 字典键不存在 | `dict["不存在的key"]` |
+| FileNotFoundError | 文件找不到 | `open("不存在的.txt")` |
+| NameError | 变量未定义 | 使用未声明的变量 |
+
+---
+
+# ✋ 检查点1
+
+你现在应该能够：
+
+1. ✅ 写出一个try-except结构捕获除零错误
+2. ✅ 说出至少3种Python异常类型
+3. ✅ 理解为什么异常处理能防止程序崩溃
+
+---
+
+# 练习题1
+
+修复这段代码，让它不会崩溃：
+
+```python
+# 你的任务：修复这段代码，让它不会崩溃
+numbers = [1, 2, 3]
+index = int(input("输入索引(0-2): "))
+print(f"对应数字是: {numbers[index]}")
+```
+
+提示：考虑用户可能输入什么错误的值？
+
+---
+
+# 🚀 第三阶段：灵活运用
+
+## 获取异常信息
+
+```python
+# 示例4：获取异常详细信息
+try:
+    num = int(input("请输入数字: "))
+    result = 10 / num
+except ZeroDivisionError as e:
+    print(f"出错了！错误信息: {e}")
+    print(f"错误类型: {type(e).__name__}")
+except Exception as e:  # 捕获所有异常
+    print(f"发生未知错误: {e}")
+```
+
+---
+
+# finally：无论如何都要执行的代码
+
+```python
+# 示例5：finally的用途
+try:
+    file = open("data.txt", "r")
+    content = file.read()
+    print(content)
+except FileNotFoundError:
+    print("文件不存在")
+finally:
+    print("无论是否出错，都会执行这里")
+    # 通常用来关闭文件、释放资源等
+```
+
+**finally** 常用于：
+- 关闭文件
+- 释放资源
+- 清理操作
+
+---
+
+# 实际应用场景：文件操作
+
+```python
+# 示例6：安全的文件读取
+try:
+    file = open("data.txt", "r", encoding="utf-8")
+    content = file.read()
+    print(f"文件内容：\n{content}")
+except FileNotFoundError:
+    print("错误：找不到data.txt文件，请检查文件是否存在")
+except PermissionError:
+    print("错误：没有读取权限")
+except UnicodeDecodeError:
+    print("错误：文件编码问题，请用记事本另存为UTF-8")
+finally:
+    # 确保文件被关闭，避免资源泄露
+    if 'file' in locals() and not file.closed:
+        file.close()
+        print("文件已安全关闭")
+```
+
+---
+
+# 主动抛出异常
+
+我们也可以自己"制造"异常：
+
+```python
+# 示例7：验证用户输入
+def calculate_age(birth_year):
+    """计算年龄"""
+    current_year = 2024
+
+    if birth_year > current_year:
+        raise ValueError("出生年份不能大于当前年份！")
+    if birth_year < 1900:
+        raise ValueError("请输入合理的出生年份！")
+
+    return current_year - birth_year
+
+# 测试
+try:
+    age = calculate_age(2030)  # 未来年份
+    print(f"年龄是: {age}")
+except ValueError as e:
+    print(f"输入错误: {e}")
+```
+
+---
+
+# ✋ 检查点2
+
+你现在应该能够：
+
+1. ✅ 使用finally确保资源被正确释放
+2. ✅ 用raise主动抛出异常
+3. ✅ 处理文件操作中的多种异常情况
+
+---
+
+# 练习题2
+
+创建一个安全的除法计算器：
+
+```python
+def safe_divide(a, b):
+    # 你的代码：处理除零错误和类型错误
+    pass
+
+# 测试你的函数
+print(safe_divide(10, 2))   # 应该输出 5.0
+print(safe_divide(10, 0))   # 应该输出"错误：除数不能为0"
+print(safe_divide(10, "a")) # 应该输出"错误：请输入数字"
+```
+
+---
+
+# 🎨 第四阶段：项目实战
+
+## 学生成绩管理系统（异常处理版）
+
+功能：安全地输入和计算学生平均分
+
+---
+
+## 获取学生成绩函数
+
+```python
+def get_student_scores():
+    """获取学生成绩"""
+    scores = []
+    print("请输入学生成绩（输入-1结束）：")
+
+    while True:
+        try:
+            score = input(f"成绩{len(scores)+1}: ")
+
+            if score == "-1":
+                if len(scores) == 0:
+                    print("至少输入一个成绩！")
+                    continue
+                break
+
+            score = float(score)
+
+            if score < 0 or score > 100:
+                raise ValueError("成绩应该在0-100之间")
+
+            scores.append(score)
+
+        except ValueError as e:
+            print(f"输入无效: {e}")
+            print("请重新输入...")
+
+    return scores
+```
+
+---
+
+## 计算平均分函数
+
+```python
+def calculate_average(scores):
+    """计算平均分"""
+    try:
+        if len(scores) == 0:
+            raise ValueError("成绩列表为空")
+
+        total = sum(scores)
+        average = total / len(scores)
+        return average
+
+    except ZeroDivisionError:
+        return 0
+    except Exception as e:
+        print(f"计算出错: {e}")
+        return None
+```
+
+---
+
+## 保存到文件函数
+
+```python
+def save_to_file(filename, scores, average):
+    """将结果保存到文件"""
+    try:
+        with open(filename, "w", encoding="utf-8") as file:
+            file.write("=== 学生成绩报告 ===\n")
+            file.write(f"成绩数量: {len(scores)}\n")
+            file.write("所有成绩: " + ", ".join(map(str, scores)) + "\n")
+            file.write(f"平均分: {average:.2f}\n")
+
+        print(f"结果已保存到 {filename}")
+
+    except PermissionError:
+        print("错误：没有写入权限，请检查文件是否被占用")
+    except Exception as e:
+        print(f"保存文件时出错: {e}")
+```
+
+---
+
+## 主程序
+
+```python
+def main():
+    """主程序"""
+    print("=" * 40)
+    print("学生成绩管理系统")
+    print("=" * 40)
+
+    try:
+        # 1. 获取成绩
+        scores = get_student_scores()
+
+        # 2. 计算平均分
+        average = calculate_average(scores)
+
+        if average is not None:
+            print(f"\n统计结果：")
+            print(f"输入了 {len(scores)} 个成绩")
+            print(f"平均分: {average:.2f}")
+
+            # 3. 保存结果
+            save_to_file("成绩报告.txt", scores, average)
+
+    except KeyboardInterrupt:
+        print("\n\n程序被用户中断")
+    except Exception as e:
+        print(f"程序运行出错: {e}")
+    finally:
+        print("\n感谢使用学生成绩管理系统！")
+
+# 运行程序
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+# 项目亮点
+
+1. ✅ **输入验证**：检查成绩范围
+2. ✅ **异常处理**：处理各种输入错误
+3. ✅ **文件安全**：使用with和异常处理确保文件操作安全
+4. ✅ **用户友好**：清晰的错误提示
+
+---
+
+# 运行测试
+
+测试以下场景，验证异常处理：
+
+1. 正常输入几个成绩
+2. 故意输入字母测试
+3. 输入超过100的成绩测试
+4. 不输入任何成绩直接结束测试
+
+---
+
+# 📝 自测题（选择题）
+
+1. **下面哪种情况应该使用异常处理？**
+   - A) 检查用户输入的年龄是否为数字
+   - B) 检查文件是否存在
+   - C) 处理网络请求突然断开
+   - D) 所有以上情况
+
+**答案：D**
+
+---
+
+# 自测题（代码题）
+
+2. **下面的代码输出是什么？**
+
+```python
+try:
+    x = 1 / 0
+except ZeroDivisionError:
+    print("A")
+except:
+    print("B")
+else:
+    print("C")
+finally:
+    print("D")
+```
+
+- A) A D ✅
+- B) B D
+- C) C D
+- D) 程序崩溃
+
+---
+
+# 自测题（概念题）
+
+3. **关于finally语句，正确的是：**
+   - A) 只有发生异常时才执行
+   - B) 只有没发生异常时才执行
+   - C) 无论是否发生异常都会执行 ✅
+   - D) 在except之前执行
+
+---
+
+# 判断题
+
+1. 异常处理会让程序运行变慢，应该尽量避免使用（❌）
+
+2. 一个try后面可以跟多个except块（✅）
+
+3. raise语句用于主动触发异常（✅）
+
+---
+
+# 🗺️ 学习路线图
+
+```
+开始学习异常处理
+    ↓
+理解什么是异常
+    ↓
+学习try-except基本结构
+    ↓
+掌握常见异常类型
+    ↓
+学习特定异常捕获 + 学习获取异常信息
+    ↓
+学习finally用法 + 学习主动抛出异常
+    ↓
+文件操作异常处理
+    ↓
+完成实战项目
+    ↓
+掌握异常处理核心
+```
+
+---
+
+# 学习路径建议
+
+## 第1天（1小时）：
+- 理解异常概念（15分钟）
+- 学习try-except（25分钟）
+- 练习基本捕获（20分钟）
+
+## 第2天（40分钟）：
+- 学习特定异常捕获（15分钟）
+- 学习finally和raise（15分钟）
+- 做自测题（10分钟）
+
+## 第3天（20分钟）：
+- 完成实战项目（20分钟）
+
+---
+
+# 里程碑检查
+
+- ✅ 能用try-except防止除零错误导致程序崩溃
+- ✅ 能处理文件找不到的异常
+- ✅ 能写出带异常处理的文件读写代码
+- ✅ 能完成实战项目并理解每行代码的作用
+
+---
+
+# 📚 推荐资源
+
+1. **官方文档（进阶阅读）：**
+   - https://docs.python.org/3/library/exceptions.html
+   - 查看所有内置异常类型
+
+2. **视频推荐（B站）：**
+   - 【狂神说Python】异常处理教程（30分钟，适合入门）
+   - 搜索关键词："Python异常处理 小白"
+
+3. **练习平台：**
+   - LeetCode题库：筛选"简单"难度的题目
+   - 菜鸟教程：Python异常处理在线练习
+
+---
+
+# 💡 下一步建议
+
+掌握异常处理后，你可以：
+
+1. **应用到实际项目**：在之前的任何程序中加入异常处理
+2. **学习调试技巧**：配合异常处理学习pdb调试
+3. **学习日志记录**：用logging模块记录异常信息
+4. **学习单元测试**：用pytest测试异常情况
+
+---
+
+# ❓ 有问题随时问
+
+学习过程中遇到任何问题，或者有哪里不明白的地方，随时可以问我。比如：
+
+- "我不理解finally和else的区别"
+- "什么时候用except Exception，什么时候用特定异常？"
+- "我的代码报错了，能帮我看看吗？"
+
+**记住：出错是学习的一部分，每个错误都是进步的机会！**
+
+---
+
+# 学习总结
+
+## 今天学到了什么？
+
+- 异常处理的基本概念和重要性
+- try-except-finally-else 语法结构
+- 常见的异常类型和处理方法
+- 如何主动抛出异常
+- 在实际项目中应用异常处理
+
+## 继续加油！
+
+咱们慢慢来，一步步掌握。😊
